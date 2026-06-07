@@ -5,6 +5,7 @@ This repository contains everything required to deploy Solidtime on Coolify usin
 It provides:
 
 - A custom initialization image for Solidtime
+- Automatic execution of migrations
 - Automatic generation of the Laravel `.env` file
 - Automatic generation of application keys
 - Automatic creation of the initial admin user
@@ -29,7 +30,6 @@ The branch name corresponds to the Solidtime version.
 | Branch | Solidtime Version |
 |----------|----------|
 | `v0.14.0` | `0.14.0` |
-| `v0.14.1` | `0.14.1` |
 
 Docker images are automatically published for each version branch.
 
@@ -53,7 +53,7 @@ mc17uulm/solidtime-coolify-init:0.14.0
 
 1. Create a new application in Coolify.
 2. Select **Docker Compose Empty**.
-3. Copy the contents of `docker-compose.coolify.yml` into the Compose configuration.
+3. Copy the contents of `coolify.yml` into the Compose configuration.
 4. Configure the required environment variables.
 5. Deploy.
 
@@ -85,25 +85,14 @@ SERVICE_PASSWORD_ADMIN
 | SMTP_USERNAME |
 | SMTP_PASSWORD |
 
-## Example
-
-```yaml
-environment:
-  - APP_NAME=Solidtime
-  - POSTGRES_DATABASE=solidtime
-  - POSTGRES_USER=solidtime
-  - ADMIN_NAME=Administrator
-  - ADMIN_EMAIL=admin@example.com
-```
-
 ## Files
 
 | File | Description |
 |--------|-------------|
 | `Dockerfile` | Builds the initialization image |
 | `init.sh` | Generates configuration and initializes Solidtime |
-| `docker-compose.coolify.yml` | Compose file for deployment in Coolify |
-| `local.compose.yml` | Local development and testing setup |
+| `coolify.yml` | Compose file for deployment in Coolify |
+| `test.yml` | Local development and testing setup |
 
 ## Building the Init Image
 
@@ -116,8 +105,8 @@ docker build \
 
 ```bash
 docker compose \
-  --env-file .dev.env \
-  -f local.compose.yml \
+  --env-file test.env \
+  -f test.yml \
   up
 ```
 
@@ -127,16 +116,12 @@ Images are automatically built and published for every version branch:
 
 ```text
 v0.14.0
-v0.14.1
-v0.15.0
 ```
 
 Published tags:
 
 ```text
 0.14.0
-0.14.1
-0.15.0
 latest
 ```
 

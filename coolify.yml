@@ -5,8 +5,8 @@ services:
     image: 'postgres:15'
     environment:
       - PGPASSWORD=${SERVICE_PASSWORD_POSTGRES}
-      - POSTGRES_DB=${POSTGRES_DATABASE}
-      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_DB=${POSTGRES_DATABASE:-solidtime}
+      - POSTGRES_USER=${POSTGRES_USER:-solidtime}
       - POSTGRES_PASSWORD=${SERVICE_PASSWORD_POSTGRES}
     volumes:
       - 'solidtime_pg_data:/var/lib/postgresql/data'
@@ -25,10 +25,10 @@ services:
     environment:
       - APP_DOMAIN=${SERVICE_FQDN_SOLIDTIME}
       - APP_URL=${SERVICE_URL_SOLIDTIME}
-      - APP_NAME=${APP_NAME}
-      - POSTGRES_HOST=${POSTGRES_HOST}
-      - POSTGRES_DATABASE=${POSTGRES_DATABASE}
-      - POSTGRES_USER=${POSTGRES_USER}
+      - APP_NAME=${APP_NAME:-Solidtime}
+      - POSTGRES_HOST=${POSTGRES_HOST:-solidtime-db}
+      - POSTGRES_DATABASE=${POSTGRES_DATABASE:-solidtime}
+      - POSTGRES_USER=${POSTGRES_USER:-solidtime}
       - POSTGRES_PASSWORD=${SERVICE_PASSWORD_POSTGRES}
       - ADMIN_NAME=${ADMIN_NAME}
       - ADMIN_EMAIL=${ADMIN_EMAIL}
@@ -112,7 +112,7 @@ services:
     user: "1000:1000"
     environment:
       - CONTAINER_MODE=worker
-      - WORKER_COMMAND="php /var/www/html/artisian queue:work"
+      - WORKER_COMMAND="php /var/www/html/artisan queue:work"
     volumes:
       - 'solidtime_config:/config'
       - 'solidtime_data:/var/www/html/storage'
@@ -139,9 +139,3 @@ services:
     image: gotenberg/gotenberg:8
     healthcheck:
       test: ["CMD", "curl", "--silent", "--fail", "http://127.0.0.1:3000/health"]
-
-volumes:
-  solidtime_pg_data:
-  solidtime_config:
-  solidtime_data:
-  solidtime_logs:
