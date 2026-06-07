@@ -41,6 +41,6 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            mc17uulm/solidtime-coolify-init:${{ steps.version.outputs.version }}
-            mc17uulm/solidtime-coolify-init:latest
+            mcombosch/solidtime-coolify-init:${{ steps.version.outputs.version }}
+            mcombosch/solidtime-coolify-init:latest
           

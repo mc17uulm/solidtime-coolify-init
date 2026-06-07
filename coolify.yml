@@ -20,7 +20,7 @@ services:
 
   solidtime-init:
     restart: no
-    image: "mc17uulm/solidtime-coolify-init:0.14.0"
+    image: "mcombosch/solidtime-coolify-init:0.14.0"
     user: "0:0"
     environment:
       - APP_DOMAIN=${SERVICE_FQDN_SOLIDTIME}
