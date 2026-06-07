@@ -1,0 +1,147 @@
+services:
+
+  solidtime-db:
+    restart: always
+    image: 'postgres:15'
+    environment:
+      - PGPASSWORD=${SERVICE_PASSWORD_POSTGRES}
+      - POSTGRES_DB=${POSTGRES_DATABASE}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${SERVICE_PASSWORD_POSTGRES}
+    volumes:
+      - 'solidtime_pg_data:/var/lib/postgresql/data'
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - 'pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}'
+      interval: 5s
+      timeout: 20s
+      retries: 10
+
+  solidtime-init:
+    restart: no
+    image: "mc17uulm/solidtime-coolify-init:0.14.0"
+    user: "0:0"
+    environment:
+      - APP_DOMAIN=${SERVICE_FQDN_SOLIDTIME}
+      - APP_URL=${SERVICE_URL_SOLIDTIME}
+      - APP_NAME=${APP_NAME}
+      - POSTGRES_HOST=${POSTGRES_HOST}
+      - POSTGRES_DATABASE=${POSTGRES_DATABASE}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${SERVICE_PASSWORD_POSTGRES}
+      - ADMIN_NAME=${ADMIN_NAME}
+      - ADMIN_EMAIL=${ADMIN_EMAIL}
+      - ADMIN_INIT_PASSWORD=${SERVICE_PASSWORD_ADMIN}
+      - SMTP_HOST=${SMTP_HOST}
+      - SMTP_PORT=${SMTP_PORT}
+      - SMTP_FROM_ADDRESS=${SMTP_FROM_ADDRESS}
+      - SMTP_FROM_NAME=${SMTP_FROM_NAME}
+      - SMTP_USERNAME=${SMTP_USERNAME}
+      - SMTP_PASSWORD=${SMTP_PASSWORD}
+    volumes:
+      - 'solidtime_config:/config'
+    depends_on:
+      solidtime-db:
+        condition: service_healthy
+
+  solidtime-app:
+    restart: always
+    image: "solidtime/solidtime:0.14.0"
+    user: "1000:1000"
+    environment:
+      - SERVICE_FQDN_SOLIDTIME_8000
+      - CONTAINER_MODE=http
+      - AUTO_DB_MIGRATE="true"
+    volumes:
+      - 'solidtime_config:/config'
+      - 'solidtime_data:/var/www/html/storage'
+      - 'solidtime_logs:/var/www/html/logs'
+    depends_on:
+      solidtime-init:
+        condition: service_completed_successfully
+      solidtime-db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://127.0.0.1:8000/health-check/up"]
+      interval: 5s
+      timeout: 20s
+      retries: 10
+    entrypoint: >
+      /bin/sh -c '
+        set -e
+        while [ ! -f /config/laravel.env ]; do sleep 1; done
+        set -a
+        . /config/laravel.env
+        . /config/.env
+        set +a
+        exec start-container
+      '
+
+  solidtime-scheduler:
+    restart: always
+    image: "solidtime/solidtime:0.14.0"
+    user: "1000:1000"
+    environment:
+      - CONTAINER_MODE=scheduler
+    volumes:
+      - 'solidtime_config:/config'
+      - 'solidtime_data:/var/www/html/storage'
+      - 'solidtime_logs:/var/www/html/logs'
+    depends_on:
+      solidtime-init:
+        condition: service_completed_successfully
+      solidtime-db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "healthcheck"]
+    entrypoint: >
+      /bin/sh -c '
+        set -e
+        while [ ! -f /config/laravel.env ]; do sleep 1; done
+        set -a
+        . /config/laravel.env
+        . /config/.env
+        set +a
+        exec start-container
+      '
+  
+  solidtime-queue:
+    restart: always
+    image: "solidtime/solidtime:0.14.0"
+    user: "1000:1000"
+    environment:
+      - CONTAINER_MODE=worker
+      - WORKER_COMMAND="php /var/www/html/artisian queue:work"
+    volumes:
+      - 'solidtime_config:/config'
+      - 'solidtime_data:/var/www/html/storage'
+      - 'solidtime_logs:/var/www/html/logs'
+    depends_on:
+      solidtime-init:
+        condition: service_completed_successfully
+      solidtime-db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "healthcheck"]
+    entrypoint: >
+      /bin/sh -c '
+        set -e
+        while [ ! -f /config/laravel.env ]; do sleep 1; done
+        set -a
+        . /config/laravel.env
+        . /config/.env
+        set +a
+        exec start-container
+      '
+
+  solidtime-gotenberg:
+    image: gotenberg/gotenberg:8
+    healthcheck:
+      test: ["CMD", "curl", "--silent", "--fail", "http://127.0.0.1:3000/health"]
+
+volumes:
+  solidtime_pg_data:
+  solidtime_config:
+  solidtime_data:
+  solidtime_logs:
