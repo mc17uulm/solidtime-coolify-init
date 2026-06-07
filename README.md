@@ -131,4 +131,4 @@ Issues and pull requests are welcome.
 
 ## License
 
-MIT
+GNU GPLv3
