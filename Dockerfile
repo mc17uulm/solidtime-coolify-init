@@ -1,4 +1,4 @@
-FROM solidtime/solidtime:0.14.0
+FROM solidtime/solidtime:0.14.1
 
 COPY --chmod=755 init.sh /init.sh
 

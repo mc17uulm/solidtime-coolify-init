@@ -27,9 +27,10 @@ The init container:
 
 The branch name corresponds to the Solidtime version.
 
-| Branch | Solidtime Version |
-|----------|----------|
-| `v0.14.0` | `0.14.0` |
+| Branch    | Solidtime Version |
+|-----------|-------------------|
+| `v0.14.1` | `0.14.1`          |
+| `v0.14.0` | `0.14.0`          |
 
 Docker images are automatically published for each version branch.
 
@@ -46,7 +47,7 @@ Version tags match the Solidtime version.
 Example:
 
 ```text
-mc17uulm/solidtime-coolify-init:0.14.0
+mc17uulm/solidtime-coolify-init:0.14.1
 ```
 
 ## Deploying with Coolify
@@ -98,7 +99,7 @@ SERVICE_PASSWORD_ADMIN
 
 ```bash
 docker build \
-  -t mc17uulm/solidtime-coolify-init:0.14.0 .
+  -t mc17uulm/solidtime-coolify-init:0.14.1 .
 ```
 
 ## Local Testing
@@ -115,14 +116,15 @@ docker compose \
 Images are automatically built and published for every version branch:
 
 ```text
-v0.14.0
+v0.14.1
 ```
 
 Published tags:
 
 ```text
-0.14.0
 latest
+0.14.1
+0.14.0
 ```
 
 ## Contributing
