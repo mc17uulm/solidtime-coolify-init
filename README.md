@@ -39,7 +39,7 @@ Docker images are automatically published for each version branch.
 The initialization image is published to Docker Hub:
 
 ```text
-mc17uulm/solidtime-coolify-init
+mcombosch/solidtime-coolify-init
 ```
 
 Version tags match the Solidtime version.
@@ -47,7 +47,7 @@ Version tags match the Solidtime version.
 Example:
 
 ```text
-mc17uulm/solidtime-coolify-init:0.14.1
+mcombosch/solidtime-coolify-init:0.14.1
 ```
 
 ## Deploying with Coolify
@@ -99,7 +99,7 @@ SERVICE_PASSWORD_ADMIN
 
 ```bash
 docker build \
-  -t mc17uulm/solidtime-coolify-init:0.14.1 .
+  -t mcombosch/solidtime-coolify-init:0.14.1 .
 ```
 
 ## Local Testing
@@ -133,4 +133,4 @@ Issues and pull requests are welcome.
 
 ## License
 
-MIT
+GNU GPLv3

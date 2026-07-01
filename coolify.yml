@@ -111,8 +111,8 @@ services:
     image: "solidtime/solidtime:0.14.1"
     user: "1000:1000"
     environment:
-      - CONTAINER_MODE=worker
-      - WORKER_COMMAND="php /var/www/html/artisan queue:work"
+      CONTAINER_MODE: worker
+      WORKER_COMMAND: 'php /var/www/html/artisan queue:work'
     volumes:
       - 'solidtime_config:/config'
       - 'solidtime_data:/var/www/html/storage'
