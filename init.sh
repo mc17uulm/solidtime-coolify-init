@@ -1,5 +1,10 @@
 #!/bin/sh
 
+if [ -f /config/laravel.env ] && [ -f /config/.env ]; then
+  echo "Already initialized. Skipping initialization."
+  exit 0
+fi
+
 check_required_vars() {
     local missing=0
 
