@@ -29,6 +29,7 @@ The branch name corresponds to the Solidtime version.
 
 | Branch    | Solidtime Version |
 |-----------|-------------------|
+| `v0.18.0` | `0.18.0`          |
 | `v0.17.0` | `0.17.0`          |
 | `v0.16.0` | `0.16.0`          |
 | `v0.15.1` | `0.15.1`          |
@@ -50,7 +51,7 @@ Version tags match the Solidtime version.
 Example:
 
 ```text
-mcombosch/solidtime-coolify-init:0.17.0
+mcombosch/solidtime-coolify-init:0.18.0
 ```
 
 ## Deploying with Coolify
@@ -102,7 +103,7 @@ SERVICE_PASSWORD_ADMIN
 
 ```bash
 docker build \
-  -t mcombosch/solidtime-coolify-init:0.17.0 .
+  -t mcombosch/solidtime-coolify-init:0.18.0 .
 ```
 
 ## Local Testing
@@ -119,13 +120,14 @@ docker compose \
 Images are automatically built and published for every version branch:
 
 ```text
-v0.17.0
+v0.18.0
 ```
 
 Published tags:
 
 ```text
 latest
+0.18.0
 0.17.0
 0.16.0
 0.15.1

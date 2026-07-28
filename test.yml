@@ -20,7 +20,7 @@ services:
 
   solidtime-init:
     restart: no
-    image: "mc17uulm/solidtime-coolify-init:0.17.0"
+    image: "mc17uulm/solidtime-coolify-init:0.18.0"
     user: "0:0"
     environment:
       - APP_DOMAIN=${SERVICE_FQDN_SOLIDTIME}
@@ -47,7 +47,7 @@ services:
 
   solidtime-app:
     restart: always
-    image: "solidtime/solidtime:0.17.0"
+    image: "solidtime/solidtime:0.18.0"
     user: "1000:1000"
     environment:
       - SERVICE_FQDN_SOLIDTIME_8000
@@ -80,7 +80,7 @@ services:
 
   solidtime-scheduler:
     restart: always
-    image: "solidtime/solidtime:0.17.0"
+    image: "solidtime/solidtime:0.18.0"
     user: "1000:1000"
     environment:
       - CONTAINER_MODE=scheduler
@@ -108,7 +108,7 @@ services:
 
   solidtime-queue:
     restart: always
-    image: "solidtime/solidtime:0.17.0"
+    image: "solidtime/solidtime:0.18.0"
     user: "1000:1000"
     environment:
       CONTAINER_MODE: worker
